@@ -1,0 +1,19 @@
+version: '3'
+
+tasks:
+  run:
+    cmds:
+      - odin run .
+
+  curl:
+    desc: run the server, curl it once, keep streaming server logs (Ctrl-C to stop)
+    cmds:
+      - odin build . -out:/tmp/h2srv -debug
+      - |
+        : > /tmp/h2srv.log
+        /tmp/h2srv > /tmp/h2srv.log 2>&1 & pid=$!
+        tail -f /tmp/h2srv.log & tail_pid=$!
+        trap '/bin/kill $pid $tail_pid' EXIT
+        until grep -q listen /tmp/h2srv.log; do sleep 0.05; done
+        curl -sS --http2-prior-knowledge http://localhost:8084/
+        wait $pid
