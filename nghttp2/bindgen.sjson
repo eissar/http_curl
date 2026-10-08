@@ -1,0 +1,12 @@
+inputs = [
+	"input"
+]
+output_folder = "."
+remove_type_prefix = ""
+remove_macro_prefix = ""
+remove_function_prefix = "nghttp2_"
+force_ada_case_types = false
+import_lib = "system:nghttp2"
+imports_file = ""
+package_name = "nghttp2"
+rename = {}
